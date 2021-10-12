@@ -1,0 +1,13 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class site {
+
+generateHTML
+generateDir
+generate
+
+}
+
+
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+class newfile {
+
+read  (String filePath, String name)
+create(String scannedText, String filePath, String name)
+
+}
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class completetext {
+scan(String filePath)
+print(ArrayList<Map<String, Integer>> wordList)
+
+}
+
+class text {
+compare(Object o1, Object o2)
+}
+
+@enduml

@@ -1,0 +1,13 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class Product {
+
+seeker
+getProduct
+getDirectory
+getOutput
+getInput
+
+}
+@enduml

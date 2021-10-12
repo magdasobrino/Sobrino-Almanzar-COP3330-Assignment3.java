@@ -1,0 +1,11 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class file41 {
+
+read(String filePath)
+
+}
+
+
+@enduml
