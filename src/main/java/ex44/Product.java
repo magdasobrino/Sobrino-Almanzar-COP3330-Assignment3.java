@@ -1,82 +1,63 @@
-package ex44;
+/*package 44;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.parser.JSONParser;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-import java.io.File;
+/import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Product {
-    private static final Scanner in = new Scanner(System.in);
-    private Object JSONParser;
+    public static ArrayList<Map<String, Object>> read(String filePath) {
+        ArrayList<Map<String, Object>> returnList = new ArrayList<>();
+        File file = new File(filePath); //reads file location into a file first.
 
-    public void seeker() {
-        boolean found = false;
+        try {
+            JsonElement element = JsonParser.parseReader(new FileReader(file)); //parses JSON file into a JSON element
+            JsonObject object = element.getAsJsonObject(); //turns element into object to extract data
 
-        String directory = getDirectory();
+            //since products is an array in JSON file, it'll need to be a JsonArray
+            JsonArray array = object.get("products").getAsJsonArray();
 
-        File input = new File(directory);
-        do {
-            String productInput = getInput("What is the product name? ");
-            try {
-                JsonElement fileElement = JsonParser.parseReader(new FileReader(input));
-                JsonObject fileObject = fileElement.getAsJsonObject();
+            for (JsonElement productElement : array) { //loop through all items in JsonArray
+                JsonObject product = productElement.getAsJsonObject(); //turns parsed element into an object to extract data
 
+                //extracts data into different variables
+                String name = product.get("name").getAsString();
+                Double price = product.get("price").getAsDouble();
+                int quantity = product.get("quantity").getAsInt();
 
-                JsonArray jsonArrayofProducts = fileObject.get("products").getAsJsonArray();
+                //due to there being different variable types, Maps will have to be <String, Object>
+                Map<String, Object> temp = new HashMap<>();
+                //adds extracted values into Map
+                temp.put("name", name);
+                temp.put("price", price);
+                temp.put("quantity", quantity);
 
-                found = getProduct(jsonArrayofProducts, productInput, found);
-                if (found == false){
-                    System.out.println("Sorry, that product was not found.");
-                }
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                //adds Map into list to return
+                returnList.add(temp);
             }
-        } while(found == false); // if false, do search again
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to read JSON file. Try again.");
+        }
 
+        return returnList;
     }
 
-    public static boolean getProduct(JsonArray jsonArrayofProducts, String productInput, boolean found) {
-        // Find Product in product Array
-        for (JsonElement productElement : jsonArrayofProducts) {
-            // Get the JsonObject
-            JsonObject productJsonObject = productElement.getAsJsonObject();
-
-            // Extract Object
-            if (productJsonObject.get("name").getAsString().equals(productInput)) {
-                found = true;
-
-                String name = productJsonObject.get("name").getAsString();
-                String price = productJsonObject.get("price").getAsString();
-                String quantity = productJsonObject.get("quantity").getAsString();
-
-                printOutput(name, price, quantity);
+    public static String search(ArrayList<Map<String, Object>> list, String name) {
+        for (Map<String, Object> temp : list) {
+            String tempName = (String) temp.get("name"); //needs to cast object to string before comparison
+            if (tempName.equalsIgnoreCase(name)) {
+                //returns product details if name matches.
+                return String.format("Name: %s | Price: %.2f | Quantity: %d%n",
+                        temp.get("name"), temp.get("price"), temp.get("quantity"));
             }
         }
-        return found;
+        //returns error if product cannot be found.
+        return "Product does not exist.";
     }
-
-    public static String getDirectory() {
-        // Get directory path
-        String userPath = System.getProperty("user.dir");
-        return userPath + "\\resources\\input\\exercise44_input.json";
-    }
-
-    public static void printOutput(String name, String price, String quantity) {
-        System.out.println("Name: " + name);
-        System.out.println("Price: " + price);
-        System.out.println("Quantity: " + quantity);
-    }
-
-    public static String getInput(String s) {
-
-        System.out.print(s);
-        return in.nextLine();
-    }
-
-}
+}/*/
